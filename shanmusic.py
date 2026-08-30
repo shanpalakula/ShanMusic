@@ -150,11 +150,8 @@ async def play_next(ctx: commands.Context):
     def after_play(error):
         if error:
             print(f"[Player] Error: {error}")
-        fut = asyncio.run_coroutine_threadsafe(play_next(ctx), bot.loop)
-        try:
-            fut.result()
-        except Exception as e:
-            print(f"[Player] after_play error: {e}")
+        # Fire-and-forget next track on the event loop without blocking the thread with fut.result()
+        asyncio.run_coroutine_threadsafe(play_next(ctx), bot.loop)
 
     vc.play(source, after=after_play)
 
@@ -191,12 +188,22 @@ async def on_ready():
 
 @bot.event
 async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        return
+
+    # Unwrap CommandInvokeError to get the actual underlying exception
+    if isinstance(error, commands.CommandInvokeError):
+        error = error.original
+
+    # Suppress transient network/voice Gateway timeout messages
+    if isinstance(error, (asyncio.TimeoutError, TimeoutError)):
+        print(f"[Info] Suppressed transient TimeoutError: {error}")
+        return
+
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(f"❌ Missing argument — try `!help {ctx.command}`", delete_after=10)
-    elif isinstance(error, commands.CommandNotFound):
-        pass
     else:
-        await ctx.send(f"❌ Error: {error}", delete_after=10)
+        await ctx.send(f"❌ Error: {error}", delete_after=15)
 
 
 # ─────────────────────────────────────────────
