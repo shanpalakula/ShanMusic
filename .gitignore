@@ -1,0 +1,12 @@
+# Environment variables (contains DISCORD_TOKEN)
+.env
+
+# Binary files
+bin/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Local cache files
+.cache
