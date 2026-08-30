@@ -37,20 +37,37 @@ A simple, fast, and feature-packed Discord Music Bot built with **Python 3.12**,
 
 ## ⚙️ How to Run
 
-### 1. Requirements
-Ensure Python 3.12+ is installed and dependencies are present:
-```bash
-pip install -r requirements.txt
-```
+### 🐳 Option A: Using Docker (Recommended)
 
-### 2. Configure Token
-Add your Discord Bot Token to the `.env` file:
-```env
-DISCORD_TOKEN=your_bot_token_here
-```
+1. Ensure Docker Desktop is running and `.env` has your `DISCORD_TOKEN`.
+2. Start the container in background:
+   ```bash
+   docker compose up -d --build
+   ```
+3. View logs:
+   ```bash
+   docker compose logs -f
+   ```
+4. Stop container:
+   ```bash
+   docker compose down
+   ```
 
-### 3. Start the Bot
-Run the bot with a single command:
-```bash
-python shanmusic.py
-```
+---
+
+### 🐍 Option B: Running Locally
+
+1. Ensure Python 3.12+ is installed and dependencies are present:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Add your Discord Bot Token to the `.env` file:
+   ```env
+   DISCORD_TOKEN=your_bot_token_here
+   ```
+
+3. Start the bot:
+   ```bash
+   python shanmusic.py
+   ```

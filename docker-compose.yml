@@ -1,0 +1,7 @@
+services:
+  shanmusic:
+    build: .
+    container_name: shanmusic-bot
+    restart: unless-stopped
+    env_file:
+      - .env
